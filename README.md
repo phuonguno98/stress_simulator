@@ -61,6 +61,7 @@ Run the simulator with the following command:
 | `-network` | Average network throughput (MB/s) | e.g., `10.0` |
 | `-target` | Target IP address(es) for network stress | `10.82.14.31,10.82.14.32` |
 | `-forever` | Run indefinitely with seasonal patterns | Boolean flag |
+| `-version` | Print version information and exit | Boolean flag |
 
 > **Note**: The default listener port for incoming network traffic is `8080`.
 

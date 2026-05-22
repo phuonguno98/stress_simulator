@@ -24,6 +24,11 @@ import (
 )
 
 var (
+	// Version information injected by the build process
+	Version   = "dev"
+	Commit    = "none"
+	BuildTime = "unknown"
+
 	cpuUtilization    = flag.Float64("cpu", 50.0, "Average CPU utilization percentage (0-100)")
 	ioWaitRatio       = flag.Float64("iowait", 20.0, "Average CPU I/O wait percentage (0-100)")
 	memoryUtilization = flag.Float64("memory", 50.0, "Average memory utilization percentage (0-100)")
@@ -31,15 +36,24 @@ var (
 	networkRate       = flag.Float64("network", 10.0, "Average network rate in MB/s")
 	targetIP          = flag.String("target", "", "Target IP address for network stress")
 	forever           = flag.Bool("forever", true, "Run indefinitely with seasonal patterns (default true)")
+	versionFlag       = flag.Bool("version", false, "Print version information and exit")
 )
 
 func main() {
 	flag.Parse()
 
+	if *versionFlag {
+		fmt.Printf("Stress Simulator version %s\n", Version)
+		fmt.Printf("Commit:     %s\n", Commit)
+		fmt.Printf("Build Time: %s\n", BuildTime)
+		os.Exit(0)
+	}
+
 	if *targetIP == "" {
 		log.Fatal("Target IP is required. Use -target flag.")
 	}
 
+	fmt.Printf("Stress Simulator %s (%s)\n", Version, Commit)
 	fmt.Printf("Starting stress simulation with:\n")
 	fmt.Printf("- CPU Utilization: %.2f%%\n", *cpuUtilization)
 	fmt.Printf("- I/O Wait Ratio: %.2f%%\n", *ioWaitRatio)
