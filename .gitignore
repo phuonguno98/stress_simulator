@@ -1,0 +1,31 @@
+# binaries for build
+bin/
+
+# Go build artifacts
+*.exe-C-test
+*.out
+*.test
+*.prof
+
+# Dependency directories
+vendor/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local environment files
+.env
+*.log
+
+# Temp data directories
+*_temp/
+temp/
+*.dat
+*.tmp

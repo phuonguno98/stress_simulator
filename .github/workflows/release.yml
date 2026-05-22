@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*" # Trigger on tags starting with v (e.g., v1.0.0)
+
+# Requires write permission to create GitHub Releases and upload assets
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.2"
+          cache: true
+
+      - name: Build Binaries
+        # Added arm64 architectures (Apple Silicon, Linux ARM)
+        # Added -trimpath and -ldflags="-s -w" to reduce binary size and strip debug symbols
+        run: |
+          mkdir -p dist
+          
+          echo "Building for Linux..."
+          GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-linux-amd64 .
+          GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-linux-arm64 .
+          
+          echo "Building for Windows..."
+          GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-windows-amd64.exe .
+          GOOS=windows GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-windows-arm64.exe .
+          
+          echo "Building for macOS..."
+          GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-darwin-amd64 .
+          GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/stress_simulator-darwin-arm64 .
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false

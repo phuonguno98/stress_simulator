@@ -1,0 +1,63 @@
+version: "2"
+run:
+  concurrency: 4
+  timeout: 5m
+  issues-exit-code: 1
+  tests: true
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+      - shadow
+  revive:
+    rules:
+      - name: exported
+        arguments:
+          - disableStutteringCheck
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - opinionated
+      - performance
+      - style
+    disabled-tags:
+      - experimental
+
+formatters:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/phuonguno98/stress_simulator
+
+linters:
+  disable-all: true
+  enable:
+    # default linters
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    # extra linters
+    - gosec
+    - gocritic
+    - revive
+    - misspell
+    - unparam
+    - unconvert
+    - whitespace
+    - nolintlint
+
+issues:
+  exclude-use-default: false
+  exclude:
+    - "G104"
+    - "G115"
+    - "G304"
+    - "G404"
+    - "unused-parameter"
